@@ -1,5 +1,8 @@
-"use client"
-import { cn } from "@/lib/utils";
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-
-export default function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -39,15 +36,17 @@ export default function LoginForm({
       } else {
         setError("Invalid credentials");
       }
-    } catch (err) {
+    } catch (err: any) {
+      // eslint-disable-next-line no-console
+      console.error(err.message);
       setError("An error occurred");
     }
   };
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm" onSubmit={handleSubmit}>
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <div className="w-full max-w-sm">
+        <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
@@ -56,15 +55,15 @@ export default function LoginForm({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
                       required
+                      id="email"
+                      placeholder="m@example.com"
+                      type="email"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     />
@@ -72,23 +71,23 @@ export default function LoginForm({
                   <div className="grid gap-3">
                     <div className="flex items-center">
                       <Label htmlFor="password">Password</Label>
-                      <a
-                        href="#"
+                      <Link
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                        href="#"
                       >
                         Forgot your password?
-                      </a>
+                      </Link>
                     </div>
                     <Input
+                      required
                       id="password"
                       type="password"
-                      required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <Button type="submit" className="w-full">
+                    <Button className="w-full" type="submit">
                       Login
                     </Button>
                   </div>
@@ -96,9 +95,9 @@ export default function LoginForm({
                 </div>
                 <div className="mt-4 text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="#" className="underline underline-offset-4">
+                  <Link className="underline underline-offset-4" href="#">
                     Sign up
-                  </a>
+                  </Link>
                 </div>
               </form>
             </CardContent>

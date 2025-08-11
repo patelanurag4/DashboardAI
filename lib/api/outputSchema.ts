@@ -154,47 +154,18 @@ export const InsightsSchema = z.object({
 
 //#region Chart Config Schema
 
-// export const FilterSelectSchema = z
-//   .object({
-//     dataKey: z
-//       .string()
-//       .describe("Must be exact SQL SELECT column name to filter by"),
-//     label: z.string().describe("Human-readable label for the filter select"),
-//   })
-//   .describe(
-//     "Configuration for filter/select dropdown when data has too many dimensions"
-//   );
-
-// // Level 3: Data Series Configuration
-// export const DataSeriesItemSchema = z.object({
-//   key: z
-//     .string()
-//     .describe(
-//       "The exact SQL column name from the SELECT statement - must match query results exactly"
-//     ),
-//   label: z
-//     .string()
-//     .describe("Human-readable display label derived from the SQL column name"),
-//   color: z
-//     .enum([
-//       "var(--chart-1)",
-//       "var(--chart-2)",
-//       "var(--chart-3)",
-//       "var(--chart-4)",
-//       "var(--chart-5)",
-//     ])
-//     .describe("The color for the data series, specified as a CSS variable."),
-// });
-
-// // Level 3: Component Configuration
-// export const ComponentSchema = z.object({
-//   dataKey: z
-//     .string()
-//     .describe(
-//       "CRITICAL: Must exactly match one of the dataSeries keys - refers to the same SQL SELECT column name used in dataSeries configuration"
-//     ),
-//   fill: z.string().describe("The fill color for the component"),
-// });
+export const SortingSchema = z
+  .object({
+    sortKey: z
+      .string()
+      .describe(
+        "The key from the data objects representing the column to use for sort order of the data series. Must match exact SQL SELECT column name.",
+      ),
+    sortOrder: z
+      .enum(["asc", "desc"])
+      .describe("The sort order for the data series"),
+  })
+  .describe("Configuration for sort and order when data needs to be sorted");
 
 // Level 2: Axis Configuration
 export const AxisSchema = z.object({
@@ -204,28 +175,6 @@ export const AxisSchema = z.object({
   label: z.string().describe("Human-readable label for the axis"),
 });
 
-// Level 2: Single Chart Visual Configuration (UPDATED)
-// export const ChartVisualSchemaX = z.object({
-//   type: z.literal("chart").describe("Chart category identifier"),
-//   dataSeries: z
-//     .array(DataSeriesItemSchema)
-//     .min(1)
-//     .describe(
-//       "Array of data series configurations from the SQL query output column names"
-//     ),
-//   components: z
-//     .array(ComponentSchema)
-//     .describe("Configuration for chart components"),
-//   xAxis: AxisSchema.describe("Configuration for the X-axis"),
-//   yAxis: AxisSchema.describe("Configuration for the Y-axis"),
-//   filterSelect: FilterSelectSchema.nullable().describe(
-//     "Filter/select configuration for complex data with 4+ dimensions, null if not needed"
-//   ),
-//   title: z.string().describe("Chart title"),
-//   description: z
-//     .string()
-//     .describe("Chart description explaining what it shows"),
-// });
 export const ChartVisualSchema = z.object({
   type: z.enum(["bar", "line", "area"]).describe("Chart category identifier"),
   title: z.string().describe("Chart title"),
@@ -252,12 +201,9 @@ export const ChartVisualSchema = z.object({
       "The key from the data objects representing the numerical value to be plotted (e.g., the height of the bars). Must match exact SQL SELECT column name.",
     ),
   isPivoted: z.boolean().describe("Whether the data is pivoted or not"),
-  sortKey: z
-    .string()
-    .nullable()
-    .describe(
-      "The key from the data objects representing the column to use for sort order of the data series. Must match exact SQL SELECT column name.",
-    ),
+  sort: SortingSchema.nullable().describe(
+    "Configuration for sort and order when data needs to be sorted",
+  ),
 });
 
 // Level 1: Main Chart Config Schema

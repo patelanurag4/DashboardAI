@@ -65,17 +65,19 @@ export function useChartLogic<T extends Record<string, any>>(
         // Ensure all valueKey columns have numeric values and sanitize keys
         config.valueKey.forEach((key) => {
           const sanitizedKey = sanitizeKey(key);
-          formattedItem[sanitizedKey] = parseFloat(formatCellValue(item[key])) || 0;
+
+          formattedItem[sanitizedKey] =
+            parseFloat(formatCellValue(item[key])) || 0;
         });
 
         return formattedItem;
       });
 
       // Sort by sortKey if provided, otherwise maintain original order
-      if (config.sortKey) {
+      if (config.sort?.sortKey) {
         result.sort((a, b) => {
-          const aVal = a[config.sortKey!];
-          const bVal = b[config.sortKey!];
+          const aVal = a[config.sort?.sortKey!];
+          const bVal = b[config.sort?.sortKey!];
 
           if (typeof aVal === "string" && typeof bVal === "string") {
             return aVal.localeCompare(bVal);
@@ -89,8 +91,24 @@ export function useChartLogic<T extends Record<string, any>>(
     } else {
       // For non-pivoted data, use the existing transformation logic
       const transformedMap = new Map<string, Record<string, any>>();
+      let sortedData = [...processedData];
 
-      processedData.forEach((item) => {
+      if (config.sort) {
+        const { sortKey } = config.sort;
+
+        sortedData.sort((a, b) => {
+          const aVal = a[sortKey];
+          const bVal = b[sortKey];
+
+          if (typeof aVal === "string" && typeof bVal === "string") {
+            return aVal.localeCompare(bVal);
+          }
+
+          return (aVal as number) - (bVal as number);
+        });
+      }
+
+      sortedData.forEach((item) => {
         const currentXAxisValue = item[config.xAxis.key] as string;
         const sanitizedXAxisKey = sanitizeKey(config.xAxis.key);
 
@@ -131,19 +149,7 @@ export function useChartLogic<T extends Record<string, any>>(
         });
       }
 
-      // Sort by month_num if it was added during transformation
-      const sortedData = Array.from(transformedMap.values()).sort((a, b) => {
-        if (a.month_num !== undefined && b.month_num !== undefined) {
-          return (a.month_num as number) - (b.month_num as number);
-        }
-
-        // Fallback to string comparison if month_num is not available
-        return String(a[sanitizeKey(config.xAxis.key)]).localeCompare(
-          String(b[sanitizeKey(config.xAxis.key)]),
-        );
-      });
-
-      return sortedData;
+      return Array.from(transformedMap.values());
     }
   }, [
     rawData,
@@ -151,7 +157,7 @@ export function useChartLogic<T extends Record<string, any>>(
     config.valueKey,
     config.seriesKey,
     config.filterKey,
-    config.sortKey,
+    config.sort?.sortKey,
     selectedFilterValue,
     isPivoted,
     seriesKeys,
@@ -166,8 +172,10 @@ export function useChartLogic<T extends Record<string, any>>(
       const originalKey = isPivoted
         ? config.valueKey[seriesKeys.indexOf(seriesVal)] || seriesVal
         : seriesVal === "value"
-        ? "value"
-        : rawData.find((item) => sanitizeKey(item[config.seriesKey || ""]) === seriesVal)?.[config.seriesKey || ""] || seriesVal;
+          ? "value"
+          : rawData.find(
+              (item) => sanitizeKey(item[config.seriesKey || ""]) === seriesVal,
+            )?.[config.seriesKey || ""] || seriesVal;
 
       chartConf[seriesVal] = {
         label:
@@ -177,7 +185,14 @@ export function useChartLogic<T extends Record<string, any>>(
     });
 
     return chartConf;
-  }, [seriesKeys, config.yAxis.label, config.valueKey, config.seriesKey, rawData, isPivoted]);
+  }, [
+    seriesKeys,
+    config.yAxis.label,
+    config.valueKey,
+    config.seriesKey,
+    rawData,
+    isPivoted,
+  ]);
 
   // Determine which data keys to render as bars
   const dataKeysToRender = seriesKeys;
@@ -190,6 +205,7 @@ export function useChartLogic<T extends Record<string, any>>(
 
         // Format x-axis data key for display
         const sanitizedXAxisKey = sanitizeKey(config.xAxis.key);
+
         formattedItem[sanitizedXAxisKey] = formatCellValue(
           item[sanitizedXAxisKey],
         );
@@ -198,7 +214,8 @@ export function useChartLogic<T extends Record<string, any>>(
         dataKeysToRender.forEach((key) => {
           if (
             typeof item[key] === "number" ||
-            (typeof item[key] === "string" && !isNaN(parseFloat(formatCellValue(item[key]))))
+            (typeof item[key] === "string" &&
+              !isNaN(parseFloat(formatCellValue(item[key]))))
           ) {
             formattedItem[key] = parseFloat(formatCellValue(item[key]));
           } else {
@@ -225,7 +242,7 @@ export function useChartLogic<T extends Record<string, any>>(
     return Math.max(...upperDomains);
   }, [transformedData, dataKeysToRender]);
 
-    const summedUpperDomain = useMemo(() => {
+  const summedUpperDomain = useMemo(() => {
     const summedValues = transformedData.map((d) => {
       return dataKeysToRender.reduce((sum, key) => {
         return sum + (Number(d[key]) || 0);
@@ -243,6 +260,6 @@ export function useChartLogic<T extends Record<string, any>>(
     formattedChartData,
     dataKeysToRender,
     upperDomain,
-    summedUpperDomain
+    summedUpperDomain,
   };
 }

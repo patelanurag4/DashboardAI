@@ -28,7 +28,7 @@ export function BarChartComponent({ config, data }: BarChartProps) {
     formattedChartData,
     dataKeysToRender,
     upperDomain,
-    summedUpperDomain
+    summedUpperDomain,
   } = useChartLogic(data, config);
 
   const shouldStack = config.seriesKey || dataKeysToRender.length > 1;

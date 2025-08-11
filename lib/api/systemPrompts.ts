@@ -268,7 +268,7 @@ When multiple columns are available for the same dimension, prefer human-readabl
 - valueKey: ["avg_salary"]
 - seriesKey: null (single metric, no grouping needed)
 - filterKey: null
-- sortKey: "department"
+- sort: { sortKey: "department", sortOrder: "asc" }
 
 **Example 2 - Non-Pivoted with Series**: 
 \`SELECT product_category, sales_region, total_revenue FROM sales GROUP BY product_category, sales_region\`
@@ -280,7 +280,7 @@ When multiple columns are available for the same dimension, prefer human-readabl
 - valueKey: ["total_revenue"]
 - seriesKey: "sales_region" (group by region)
 - filterKey: null
-- sortKey: "product_category"
+- sort: { sortKey: "total_revenue", sortOrder: "desc" }
 
 **Example 3 - Pivoted Data**: 
 \`SELECT month, SUM(CASE WHEN region='North' THEN sales ELSE 0 END) AS north_sales, SUM(CASE WHEN region='South' THEN sales ELSE 0 END) AS south_sales FROM sales GROUP BY month\`
@@ -292,7 +292,7 @@ When multiple columns are available for the same dimension, prefer human-readabl
 - valueKey: ["north_sales", "south_sales"]
 - seriesKey: null (data already pivoted by SQL)
 - filterKey: null
-- sortKey: "month"
+- sort: {sortKey: "month", sortOrder: "asc"}
 
 **Example 4 - Complex Data with Filter**: 
 \`SELECT month_year, specialization, patient_age_group, total_revenue FROM revenue_data GROUP BY month_year, specialization, patient_age_group\`
@@ -304,7 +304,7 @@ When multiple columns are available for the same dimension, prefer human-readabl
 - valueKey: ["total_revenue"]
 - seriesKey: "patient_age_group" (group by age)
 - filterKey: "specialization" (too many combinations, filter by specialty)
-- sortKey: "month_year"
+- sort: {sortKey: "month_year", sortOrder: "asc"}
 
 ## VALIDATION CHECKLIST
 Before finalizing any configuration:
