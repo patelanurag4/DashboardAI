@@ -4,6 +4,11 @@ import { ChartConfig } from "@/components/ui/chart";
 import { formatCellValue } from "@/lib/utils";
 import { ChartVisual } from "@/lib/api/types";
 
+// Utility function to sanitize column names by replacing spaces with underscores
+const sanitizeKey = (key: string): string => {
+  return key.replace(/\s+/g, "_");
+};
+
 export function useChartLogic<T extends Record<string, any>>(
   rawData: T[],
   config: ChartVisual,
@@ -28,12 +33,14 @@ export function useChartLogic<T extends Record<string, any>>(
   // Get the series keys based on whether data is pivoted or not
   const seriesKeys = useMemo(() => {
     if (isPivoted) {
-      return config.valueKey; // Use the valueKey array directly for pivoted data
+      return config.valueKey.map(sanitizeKey); // Sanitize valueKey for pivoted data
     } else if (!isPivoted && config.seriesKey) {
-      // For non-pivoted data, extract unique series values
+      // For non-pivoted data, extract unique series values and sanitize
       return Array.from(
         new Set(rawData.map((item) => item[config.seriesKey!] as string)),
-      ).sort();
+      )
+        .sort()
+        .map(sanitizeKey);
     } else {
       return ["value"]; // Default single series
     }
@@ -55,9 +62,10 @@ export function useChartLogic<T extends Record<string, any>>(
       let result = processedData.map((item) => {
         const formattedItem: Record<string, any> = { ...item };
 
-        // Ensure all valueKey columns have numeric values
+        // Ensure all valueKey columns have numeric values and sanitize keys
         config.valueKey.forEach((key) => {
-          formattedItem[key] = parseFloat(item[key] as string) || 0;
+          const sanitizedKey = sanitizeKey(key);
+          formattedItem[sanitizedKey] = parseFloat(formatCellValue(item[key])) || 0;
         });
 
         return formattedItem;
@@ -84,10 +92,11 @@ export function useChartLogic<T extends Record<string, any>>(
 
       processedData.forEach((item) => {
         const currentXAxisValue = item[config.xAxis.key] as string;
+        const sanitizedXAxisKey = sanitizeKey(config.xAxis.key);
 
         if (!transformedMap.has(currentXAxisValue)) {
           transformedMap.set(currentXAxisValue, {
-            [config.xAxis.key]: currentXAxisValue,
+            [sanitizedXAxisKey]: currentXAxisValue,
             ...(item.month_num !== undefined && { month_num: item.month_num }),
           });
         }
@@ -95,14 +104,15 @@ export function useChartLogic<T extends Record<string, any>>(
 
         // For non-pivoted data, use the first valueKey element
         const valueKeyToUse = config.valueKey[0];
-        const value = parseFloat(item[valueKeyToUse] as string);
+        const value = parseFloat(formatCellValue(item[valueKeyToUse]));
 
         if (config.seriesKey) {
           // If seriesKey is provided, pivot the data
           const currentSeriesValue = item[config.seriesKey] as string;
+          const sanitizedSeriesValue = sanitizeKey(currentSeriesValue);
 
-          currentXAxisEntry[currentSeriesValue] =
-            (currentXAxisEntry[currentSeriesValue] || 0) + value;
+          currentXAxisEntry[sanitizedSeriesValue] =
+            (currentXAxisEntry[sanitizedSeriesValue] || 0) + value;
         } else {
           // If no seriesKey, sum all values for this xAxisKey under a generic 'value' key
           currentXAxisEntry["value"] =
@@ -128,8 +138,8 @@ export function useChartLogic<T extends Record<string, any>>(
         }
 
         // Fallback to string comparison if month_num is not available
-        return String(a[config.xAxis.key]).localeCompare(
-          String(b[config.xAxis.key]),
+        return String(a[sanitizeKey(config.xAxis.key)]).localeCompare(
+          String(b[sanitizeKey(config.xAxis.key)]),
         );
       });
 
@@ -152,15 +162,22 @@ export function useChartLogic<T extends Record<string, any>>(
     const chartConf: ChartConfig = {};
 
     seriesKeys.forEach((seriesVal, index) => {
+      // Use original key for label (with spaces), sanitized key for data reference
+      const originalKey = isPivoted
+        ? config.valueKey[seriesKeys.indexOf(seriesVal)] || seriesVal
+        : seriesVal === "value"
+        ? "value"
+        : rawData.find((item) => sanitizeKey(item[config.seriesKey || ""]) === seriesVal)?.[config.seriesKey || ""] || seriesVal;
+
       chartConf[seriesVal] = {
         label:
-          seriesVal === "value" ? config.yAxis.label || "Value" : seriesVal,
+          seriesVal === "value" ? config.yAxis.label || "Value" : originalKey,
         color: `var(--chart-${(index % 5) + 1})`,
       };
     });
 
     return chartConf;
-  }, [seriesKeys, config.yAxis.label]);
+  }, [seriesKeys, config.yAxis.label, config.valueKey, config.seriesKey, rawData, isPivoted]);
 
   // Determine which data keys to render as bars
   const dataKeysToRender = seriesKeys;
@@ -172,17 +189,18 @@ export function useChartLogic<T extends Record<string, any>>(
         const formattedItem: Record<string, any> = { ...item };
 
         // Format x-axis data key for display
-        formattedItem[config.xAxis.key as string] = formatCellValue(
-          item[config.xAxis.key],
+        const sanitizedXAxisKey = sanitizeKey(config.xAxis.key);
+        formattedItem[sanitizedXAxisKey] = formatCellValue(
+          item[sanitizedXAxisKey],
         );
 
         // Format the value keys for display
         dataKeysToRender.forEach((key) => {
           if (
             typeof item[key] === "number" ||
-            (typeof item[key] === "string" && !isNaN(parseFloat(item[key])))
+            (typeof item[key] === "string" && !isNaN(parseFloat(formatCellValue(item[key]))))
           ) {
-            formattedItem[key] = parseFloat(item[key as string]);
+            formattedItem[key] = parseFloat(formatCellValue(item[key]));
           } else {
             formattedItem[key] = item[key];
           }
@@ -207,6 +225,16 @@ export function useChartLogic<T extends Record<string, any>>(
     return Math.max(...upperDomains);
   }, [transformedData, dataKeysToRender]);
 
+    const summedUpperDomain = useMemo(() => {
+    const summedValues = transformedData.map((d) => {
+      return dataKeysToRender.reduce((sum, key) => {
+        return sum + (Number(d[key]) || 0);
+      }, 0);
+    });
+
+    return Math.ceil(Math.max(...summedValues) / 10) * 10;
+  }, [transformedData, dataKeysToRender, upperDomain]);
+
   return {
     selectedFilterValue,
     setSelectedFilterValue,
@@ -215,5 +243,6 @@ export function useChartLogic<T extends Record<string, any>>(
     formattedChartData,
     dataKeysToRender,
     upperDomain,
+    summedUpperDomain
   };
 }
