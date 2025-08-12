@@ -195,8 +195,24 @@ async function summarizeConversation(
 
 export async function POST(req: NextRequest) {
   const { userId, messages } = await req.json();
+
+  if (!userId || !messages) {
+    return new NextResponse("User ID and message is required", {
+      status: 400,
+    });
+  }
+  const POSTGRES_URL = process.env.POSTGRES_URL;
+  const AI_API_KEY = process.env.AI_API_KEY;
+  const AI_BASE_URL = process.env.AI_BASE_URL;
+  const AI_MODEL_NAME = process.env.AI_MODEL_NAME;
+
+  if (!POSTGRES_URL || !AI_API_KEY || !AI_BASE_URL || !AI_MODEL_NAME) {
+    return new NextResponse("missing env key", {
+      status: 400,
+    });
+  }
   const userSchema = userSchemas[userId]?.schema;
-  const dbUrl = userSchemas[userId]?.db_url;
+  const dbUrl = POSTGRES_URL + userSchemas[userId]?.db_url;
   const userQuery = messages[messages.length - 1].content;
 
   if (!userSchema || !dbUrl) {
@@ -205,7 +221,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const aiClient = new AIClient();
+  const aiClient = new AIClient(AI_API_KEY, AI_BASE_URL, AI_MODEL_NAME);
   const schemaString = JSON.stringify(userSchema);
 
   const stream = new ReadableStream<Uint8Array>({
