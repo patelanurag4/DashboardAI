@@ -197,7 +197,9 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
                       ))}
 
                     {message.data ? (
-                      message.visuals && message.data.length >= 3 ? (
+                      message.visuals &&
+                      message.visuals.visuals &&
+                      message.data.length >= 3 ? (
                         message.visuals.visuals.map((visual, index) => (
                           <ChartsComponent
                             key={index}
@@ -217,6 +219,22 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
                         </div>
                       )
                     ) : null}
+
+                    {message.query?.explanation && (
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Info className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm font-semibold text-primary">
+                            Explanation
+                          </span>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          <MarkdownRenderer>
+                            {message.query.explanation}
+                          </MarkdownRenderer>
+                        </div>
+                      </div>
+                    )}
 
                     {message.query?.sqlQuery && (
                       <Card className="bg-muted/30 border-muted p-1 py-2">
