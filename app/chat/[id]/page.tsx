@@ -6,9 +6,9 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
-import { ChatHeader } from "@/components/chatHeader";
-import { MessageBubble } from "@/components/messageBubble";
-import { MessageInput } from "@/components/messageInput";
+import { ChatHeader } from "@/components/chat/chatHeader";
+import { MessageBubble } from "@/components/chat/messageBubble";
+import { MessageInput } from "@/components/chat/messageInput";
 import { InsightsSidebar } from "@/components/insightsSidebar";
 import { ChatStorage } from "@/hooks/chatStorage";
 import { useChat } from "@/hooks/useChat";
@@ -189,10 +189,10 @@ export default function ChatPage() {
     <div className="flex flex-col h-screen w-full">
       <ChatHeader title={chatTitle} />
 
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 ">
         {/* Main Content Area */}
         <div
-          className={`flex flex-col min-h-0 transition-all duration-300 w-4/5`}
+          className={`flex flex-1 flex-col min-h-0 transition-all duration-300 w-4/5`}
         >
           {/* Messages Container - FIXED HEIGHT */}
           <div
