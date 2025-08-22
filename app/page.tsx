@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Database, Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -66,18 +66,13 @@ export default function HomePage() {
     "Find customers who haven't ordered recently",
   ];
 
-
   return (
     <div className="flex-1 overflow-y-auto">
-
-
       <div className="flex items-center justify-center min-h-full p-8">
         <div className="w-full max-w-2xl space-y-8">
-
           {/* Form */}
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
-
               <div className="space-y-2">
                 <Label className="text-base font-medium" htmlFor="query">
                   Ask a question
@@ -115,8 +110,6 @@ export default function HomePage() {
               </p>
             </div>
           </form>
-
-
         </div>
       </div>
     </div>

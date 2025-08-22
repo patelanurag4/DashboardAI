@@ -213,7 +213,7 @@ export default function ChatPage() {
                   ref={
                     message.role === "assistant"
                       ? (el: HTMLDivElement | null) =>
-                        setMessageRef(message.id, el)
+                          setMessageRef(message.id, el)
                       : undefined
                   }
                   isStreaming={isLastMessage(index) ? isStreaming : false}
