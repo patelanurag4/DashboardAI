@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useState, forwardRef } from "react";
 
-import ChartsComponent from "../visuals";
 import DataTableComponent from "../visuals/dataTableComponent";
 import MarkdownRenderer from "../markdownRenderer";
 
@@ -150,7 +149,7 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
                         <span
                           className={cn(
                             isStreaming &&
-                              "animate-gradient bg-gradient-to-r from-[var(--muted-foreground)] via-[var(--text-primary)] to-[var(--muted-foreground)] bg-[length:300%_100%] bg-left bg-clip-text text-transparent",
+                            "animate-gradient bg-gradient-to-r from-[var(--muted-foreground)] via-[var(--text-primary)] to-[var(--muted-foreground)] bg-[length:300%_100%] bg-left bg-clip-text text-transparent",
                           )}
                         >
                           {currentStatus}
@@ -196,28 +195,17 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
                         </div>
                       ))}
 
-                    {message.data ? (
-                      message.visuals &&
-                      message.visuals.visuals &&
-                      message.data.length >= 3 ? (
-                        message.visuals.visuals.map((visual, index) => (
-                          <ChartsComponent
-                            key={index}
-                            chartData={message.data}
-                            config={visual}
-                          />
-                        ))
-                      ) : (
-                        <div className="py-2">
-                          <div className="flex items-center gap-2 mb-4">
-                            <Database className="w-4 h-4 text-blue-600" />
-                            <span className="text-sm font-semibold">
-                              Results
-                            </span>
-                          </div>
-                          <DataTableComponent data={message.data} />
+                    {message.data ? ((
+                      <div className="py-2">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Database className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-semibold">
+                            Results
+                          </span>
                         </div>
-                      )
+                        <DataTableComponent data={message.data} />
+                      </div>
+                    )
                     ) : null}
 
                     {message.query?.explanation && (

@@ -6,10 +6,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
-import { ChatHeader } from "@/components/chat/chatHeader";
 import { MessageBubble } from "@/components/chat/messageBubble";
 import { MessageInput } from "@/components/chat/messageInput";
-import { InsightsSidebar } from "@/components/insightsSidebar";
 import { ChatStorage } from "@/hooks/chatStorage";
 import { useChat } from "@/hooks/useChat";
 
@@ -19,7 +17,6 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [user, setUser] = useState("");
   const [chatTitle, setChatTitle] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeMessage, setActiveMessage] = useState<AssistantMessage | null>(
     null,
   );
@@ -187,7 +184,11 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen w-full">
-      <ChatHeader title={chatTitle} />
+      <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background sticky top-0 z-10">
+        <div className="flex items-center space-x-2">
+          <span className="font-semibold text-foreground">{chatTitle}</span>
+        </div>
+      </header>
 
       <div className="flex flex-1 min-h-0 ">
         {/* Main Content Area */}
@@ -212,7 +213,7 @@ export default function ChatPage() {
                   ref={
                     message.role === "assistant"
                       ? (el: HTMLDivElement | null) =>
-                          setMessageRef(message.id, el)
+                        setMessageRef(message.id, el)
                       : undefined
                   }
                   isStreaming={isLastMessage(index) ? isStreaming : false}
@@ -240,19 +241,6 @@ export default function ChatPage() {
             />
           </div>
         </div>
-
-        {/* Insights Sidebar */}
-        <InsightsSidebar
-          generateInsights={generateInsights}
-          insightContent={insightContent}
-          isInsightStreaming={isInsightStreaming}
-          isOpen={isSidebarOpen}
-          isStreaming={isStreaming}
-          message={activeMessage}
-          usageMetrics={usageMetrics}
-          userId={user}
-          onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
       </div>
     </div>
   );

@@ -2,1330 +2,1117 @@ export const userSchemas: any = {
   user01: {
     user_id: "user01",
     db_url: `/dvdrental`,
-    schema: {
-      actor: {
+    schema: [
+      {
+        table_schema: "hdb_catalog",
+        table_name: "event_invocation_logs",
         columns: [
           {
-            name: "actor_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: "hdb_catalog.gen_hasura_uuid()",
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "trigger_name",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "first_name",
-            type: "CHARACTER VARYING",
+            column_name: "event_id",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "last_name",
-            type: "CHARACTER VARYING",
+            column_name: "status",
+            data_type: "integer",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "request",
+            data_type: "json",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "response",
+            data_type: "json",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "created_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "YES",
+            column_default: "now()",
           },
         ],
-        relationships: [],
       },
-      actor_info: {
+      {
+        table_schema: "hdb_catalog",
+        table_name: "event_log",
         columns: [
           {
-            name: "actor_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: "hdb_catalog.gen_hasura_uuid()",
           },
           {
-            name: "first_name",
-            type: "CHARACTER VARYING",
+            column_name: "schema_name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "last_name",
-            type: "CHARACTER VARYING",
+            column_name: "table_name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "film_info",
-            type: "TEXT",
+            column_name: "trigger_name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "payload",
+            data_type: "jsonb",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "delivered",
+            data_type: "boolean",
+            is_nullable: "NO",
+            column_default: "false",
+          },
+          {
+            column_name: "error",
+            data_type: "boolean",
+            is_nullable: "NO",
+            column_default: "false",
+          },
+          {
+            column_name: "tries",
+            data_type: "integer",
+            is_nullable: "NO",
+            column_default: "0",
+          },
+          {
+            column_name: "created_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "YES",
+            column_default: "now()",
+          },
+          {
+            column_name: "locked",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "next_retry_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "archived",
+            data_type: "boolean",
+            is_nullable: "NO",
+            column_default: "false",
           },
         ],
-        relationships: [],
       },
-      customer_list: {
+      {
+        table_schema: "hdb_catalog",
+        table_name: "hdb_event_log_cleanups",
         columns: [
           {
-            name: "id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: "hdb_catalog.gen_hasura_uuid()",
           },
           {
-            name: "sid",
-            type: "SMALLINT",
+            column_name: "trigger_name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "address",
-            type: "CHARACTER VARYING",
+            column_name: "scheduled_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "zip code",
-            type: "CHARACTER VARYING",
+            column_name: "deleted_event_logs",
+            data_type: "integer",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "phone",
-            type: "CHARACTER VARYING",
+            column_name: "deleted_event_invocation_logs",
+            data_type: "integer",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "city",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "country",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "notes",
-            type: "TEXT",
-          },
-          {
-            name: "name",
-            type: "TEXT",
+            column_name: "status",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      film_list: {
+      {
+        table_schema: "hdb_catalog",
+        table_name: "hdb_source_catalog_version",
         columns: [
           {
-            name: "fid",
-            type: "INTEGER",
+            column_name: "version",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "price",
-            type: "NUMERIC",
-          },
-          {
-            name: "length",
-            type: "SMALLINT",
-          },
-          {
-            name: "rating",
-            type: "USER-DEFINED",
-          },
-          {
-            name: "actors",
-            type: "TEXT",
-          },
-          {
-            name: "title",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "description",
-            type: "TEXT",
-          },
-          {
-            name: "category",
-            type: "CHARACTER VARYING",
+            column_name: "upgraded_on",
+            data_type: "timestamp with time zone",
+            is_nullable: "NO",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      nicer_but_slower_film_list: {
+      {
+        table_schema: "public",
+        table_name: "alerts",
         columns: [
           {
-            name: "fid",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "price",
-            type: "NUMERIC",
+            column_name: "userid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "length",
-            type: "SMALLINT",
+            column_name: "created_by",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "rating",
-            type: "USER-DEFINED",
+            column_name: "created_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "NO",
+            column_default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "actors",
-            type: "TEXT",
+            column_name: "isread",
+            data_type: "boolean",
+            is_nullable: "NO",
+            column_default: "false",
           },
           {
-            name: "title",
-            type: "CHARACTER VARYING",
+            column_name: "noteid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "description",
-            type: "TEXT",
+            column_name: "logbook_entry_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "category",
-            type: "CHARACTER VARYING",
+            column_name: "comment_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "type",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "is_cleared",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: "false",
           },
         ],
-        relationships: [],
       },
-      sales_by_film_category: {
+      {
+        table_schema: "public",
+        table_name: "asset_events",
         columns: [
           {
-            name: "total_sales",
-            type: "NUMERIC",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "category",
-            type: "CHARACTER VARYING",
+            column_name: "asset_id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "old_status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "new_status",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "changed_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "NO",
+            column_default: "now()",
+          },
+          {
+            column_name: "changed_by",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "notes",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      store: {
+      {
+        table_schema: "public",
+        table_name: "assets",
         columns: [
           {
-            name: "store_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "manager_staff_id",
-            type: "SMALLINT",
+            column_name: "name",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "address_id",
-            type: "SMALLINT",
+            column_name: "location_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "address_id",
-            foreign_table: "address",
-            foreign_column: "address_id",
+            column_name: "type",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            column: "manager_staff_id",
-            foreign_table: "staff",
-            foreign_column: "staff_id",
+            column_name: "isAssetActive",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: "true",
+          },
+          {
+            column_name: "textsearch",
+            data_type: "tsvector",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "asset_status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: "'inService'::text",
+          },
+          {
+            column_name: "asset_grouping",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      sales_by_store: {
+      {
+        table_schema: "public",
+        table_name: "audit_trail",
         columns: [
           {
-            name: "total_sales",
-            type: "NUMERIC",
+            column_name: "changeid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "store",
-            type: "TEXT",
+            column_name: "logbookentryid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "manager",
-            type: "TEXT",
+            column_name: "noteid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "changedby",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "changetype",
+            data_type: "character varying",
+            is_nullable: "NO",
+            column_default: null,
+          },
+          {
+            column_name: "changedetails",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "timestamp",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "CURRENT_TIMESTAMP",
           },
         ],
-        relationships: [],
       },
-      staff_list: {
+      {
+        table_schema: "public",
+        table_name: "comments",
         columns: [
           {
-            name: "id",
-            type: "INTEGER",
+            column_name: "commentid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "sid",
-            type: "SMALLINT",
+            column_name: "noteid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "address",
-            type: "CHARACTER VARYING",
+            column_name: "userid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "zip code",
-            type: "CHARACTER VARYING",
+            column_name: "commenttext",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "phone",
-            type: "CHARACTER VARYING",
+            column_name: "createdat",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
           },
           {
-            name: "city",
-            type: "CHARACTER VARYING",
+            column_name: "updatedat",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
           },
           {
-            name: "country",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "name",
-            type: "TEXT",
+            column_name: "tagged_users",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      address: {
+      {
+        table_schema: "public",
+        table_name: "locations",
         columns: [
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "city_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "address_id",
-            type: "INTEGER",
-          },
-          {
-            name: "district",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "phone",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "postal_code",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "address",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "address2",
-            type: "CHARACTER VARYING",
-          },
-        ],
-        relationships: [
-          {
-            column: "city_id",
-            foreign_table: "city",
-            foreign_column: "city_id",
+            column_name: "name",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      category: {
+      {
+        table_schema: "public",
+        table_name: "logbook_entries",
         columns: [
           {
-            name: "category_id",
-            type: "INTEGER",
+            column_name: "entryid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "userid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "name",
-            type: "CHARACTER VARYING",
+            column_name: "assetid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "timeframe",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "CURRENT_TIMESTAMP",
+          },
+          {
+            column_name: "type",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "priority",
+            data_type: "integer",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "createdby",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "updatedby",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "location_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "logbook_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "textsearch",
+            data_type: "tsvector",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "archive",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: "false",
+          },
+          {
+            column_name: "current_asset_status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: "'inService'::text",
           },
         ],
-        relationships: [],
       },
-      city: {
+      {
+        table_schema: "public",
+        table_name: "logbooks",
         columns: [
           {
-            name: "city_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "country_id",
-            type: "SMALLINT",
+            column_name: "name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "created_by",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "city",
-            type: "CHARACTER VARYING",
+            column_name: "location_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
-        ],
-        relationships: [
           {
-            column: "country_id",
-            foreign_table: "country",
-            foreign_column: "country_id",
+            column_name: "created_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
+          },
+          {
+            column_name: "updated_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
           },
         ],
       },
-      country: {
+      {
+        table_schema: "public",
+        table_name: "notes",
         columns: [
           {
-            name: "country_id",
-            type: "INTEGER",
+            column_name: "noteid",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "entryid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "country",
-            type: "CHARACTER VARYING",
+            column_name: "notetext",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "createdat",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
+          },
+          {
+            column_name: "createdby",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "lasteditedby",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "lastediteddate",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "now()",
+          },
+          {
+            column_name: "attachment_urls",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: "'{}'::text[]",
+          },
+          {
+            column_name: "textsearch",
+            data_type: "tsvector",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "notetext_raw",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "tagged_users",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "shift_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "note_asset_status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      customer: {
+      {
+        table_schema: "public",
+        table_name: "permissions",
         columns: [
           {
-            name: "active",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "store_id",
-            type: "SMALLINT",
+            column_name: "permission_name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "create_date",
-            type: "DATE",
+            column_name: "title",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-          {
-            name: "customer_id",
-            type: "INTEGER",
-          },
-          {
-            name: "address_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "activebool",
-            type: "BOOLEAN",
-          },
-          {
-            name: "first_name",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "last_name",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "email",
-            type: "CHARACTER VARYING",
-          },
-        ],
-        relationships: [
-          {
-            column: "address_id",
-            foreign_table: "address",
-            foreign_column: "address_id",
+            column_name: "description",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      film_actor: {
+      {
+        table_schema: "public",
+        table_name: "prompt_ql_data",
         columns: [
           {
-            name: "actor_id",
-            type: "SMALLINT",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "gen_random_uuid()",
           },
           {
-            name: "film_id",
-            type: "SMALLINT",
+            column_name: "data",
+            data_type: "jsonb",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "actor_id",
-            foreign_table: "actor",
-            foreign_column: "actor_id",
+            column_name: "status",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            column: "film_id",
-            foreign_table: "film",
-            foreign_column: "film_id",
+            column_name: "fetched_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "NO",
+            column_default: "now()",
+          },
+          {
+            column_name: "process_name",
+            data_type: "character varying",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      film_category: {
+      {
+        table_schema: "public",
+        table_name: "refresh_status",
         columns: [
           {
-            name: "film_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "category_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "category_id",
-            foreign_table: "category",
-            foreign_column: "category_id",
-          },
-          {
-            column: "film_id",
-            foreign_table: "film",
-            foreign_column: "film_id",
+            column_name: "status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      inventory: {
+      {
+        table_schema: "public",
+        table_name: "report_content_details",
         columns: [
           {
-            name: "inventory_id",
-            type: "INTEGER",
+            column_name: "content_id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "film_id",
-            type: "SMALLINT",
+            column_name: "shift_report_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "store_id",
-            type: "SMALLINT",
+            column_name: "asset_grouping",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "created_by",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
-        ],
-        relationships: [
           {
-            column: "film_id",
-            foreign_table: "film",
-            foreign_column: "film_id",
+            column_name: "created_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "YES",
+            column_default: "CURRENT_TIMESTAMP",
+          },
+          {
+            column_name: "noteid",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "logbook_entry_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "asset_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      language: {
+      {
+        table_schema: "public",
+        table_name: "report_settings",
         columns: [
           {
-            name: "language_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "sort_by",
+            data_type: "character varying",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "name",
-            type: "CHARACTER",
+            column_name: "asset_status",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "show_passdown_by",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "show_created_by",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "created_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: "CURRENT_TIMESTAMP",
+          },
+          {
+            column_name: "report_email_list",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      rental: {
+      {
+        table_schema: "public",
+        table_name: "report_shifts",
         columns: [
           {
-            name: "rental_id",
-            type: "INTEGER",
+            column_name: "shift_report_id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "rental_date",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "report_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "inventory_id",
-            type: "INTEGER",
+            column_name: "shift_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "customer_id",
-            type: "SMALLINT",
+            column_name: "time_frame",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "return_date",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
+            column_name: "asset_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "staff_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "customer_id",
-            foreign_table: "customer",
-            foreign_column: "customer_id",
-          },
-          {
-            column: "inventory_id",
-            foreign_table: "inventory",
-            foreign_column: "inventory_id",
-          },
-          {
-            column: "staff_id",
-            foreign_table: "staff",
-            foreign_column: "staff_id",
+            column_name: "shift_summary",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      staff: {
+      {
+        table_schema: "public",
+        table_name: "reports",
         columns: [
           {
-            name: "picture",
-            type: "BYTEA",
+            column_name: "report_id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "address_id",
-            type: "SMALLINT",
+            column_name: "date",
+            data_type: "date",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "store_id",
-            type: "SMALLINT",
+            column_name: "user_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "active",
-            type: "BOOLEAN",
+            column_name: "created_at",
+            data_type: "timestamp without time zone",
+            is_nullable: "YES",
+            column_default: "CURRENT_TIMESTAMP",
           },
           {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-          {
-            name: "staff_id",
-            type: "INTEGER",
-          },
-          {
-            name: "first_name",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "last_name",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "password",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "email",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "username",
-            type: "CHARACTER VARYING",
-          },
-        ],
-        relationships: [
-          {
-            column: "address_id",
-            foreign_table: "address",
-            foreign_column: "address_id",
+            column_name: "status",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: "'Generated'::text",
           },
         ],
       },
-      payment: {
+      {
+        table_schema: "public",
+        table_name: "role_permissions",
         columns: [
           {
-            name: "payment_id",
-            type: "INTEGER",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "gen_random_uuid()",
           },
           {
-            name: "customer_id",
-            type: "SMALLINT",
+            column_name: "role_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "staff_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "rental_id",
-            type: "INTEGER",
-          },
-          {
-            name: "amount",
-            type: "NUMERIC",
-          },
-          {
-            name: "payment_date",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "customer_id",
-            foreign_table: "customer",
-            foreign_column: "customer_id",
-          },
-          {
-            column: "rental_id",
-            foreign_table: "rental",
-            foreign_column: "rental_id",
-          },
-          {
-            column: "staff_id",
-            foreign_table: "staff",
-            foreign_column: "staff_id",
+            column_name: "permission_id",
+            data_type: "uuid",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      film: {
+      {
+        table_schema: "public",
+        table_name: "roles",
         columns: [
           {
-            name: "fulltext",
-            type: "TSVECTOR",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "rating",
-            type: "USER-DEFINED",
-          },
-          {
-            name: "last_update",
-            type: "TIMESTAMP WITHOUT TIME ZONE",
-          },
-          {
-            name: "film_id",
-            type: "INTEGER",
-          },
-          {
-            name: "release_year",
-            type: "INTEGER",
-          },
-          {
-            name: "language_id",
-            type: "SMALLINT",
-          },
-          {
-            name: "rental_duration",
-            type: "SMALLINT",
-          },
-          {
-            name: "rental_rate",
-            type: "NUMERIC",
-          },
-          {
-            name: "length",
-            type: "SMALLINT",
-          },
-          {
-            name: "replacement_cost",
-            type: "NUMERIC",
-          },
-          {
-            name: "title",
-            type: "CHARACTER VARYING",
-          },
-          {
-            name: "description",
-            type: "TEXT",
-          },
-          {
-            name: "special_features",
-            type: "ARRAY",
-          },
-        ],
-        relationships: [
-          {
-            column: "language_id",
-            foreign_table: "language",
-            foreign_column: "language_id",
+            column_name: "rolename",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
         ],
       },
-    },
-  },
-  user02: {
-    user_id: "user02",
-    db_url: `/clothing`,
-    schema: {
-      public_table: {
-        columns: [],
-        relationships: [],
-      },
-      colors: {
+      {
+        table_schema: "public",
+        table_name: "shifts",
         columns: [
           {
-            name: "id",
-            type: "INTEGER",
+            column_name: "shift_id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "gen_random_uuid()",
           },
           {
-            name: "name",
-            type: "TEXT",
+            column_name: "shift_name",
+            data_type: "character varying",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "rgb",
-            type: "TEXT",
+            column_name: "start_time",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "end_time",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "buffer_start",
+            data_type: "time without time zone",
+            is_nullable: "YES",
+            column_default: null,
+          },
+          {
+            column_name: "buffer_end",
+            data_type: "time without time zone",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
-        relationships: [],
       },
-      sizes: {
+      {
+        table_schema: "public",
+        table_name: "users",
         columns: [
           {
-            name: "size_eu",
-            type: "INT4RANGE",
+            column_name: "id",
+            data_type: "uuid",
+            is_nullable: "NO",
+            column_default: "uuid_generate_v4()",
           },
           {
-            name: "gender",
-            type: "USER-DEFINED",
+            column_name: "name",
+            data_type: "text",
+            is_nullable: "NO",
+            column_default: null,
           },
           {
-            name: "category",
-            type: "USER-DEFINED",
+            column_name: "created_at",
+            data_type: "timestamp with time zone",
+            is_nullable: "NO",
+            column_default: "now()",
           },
           {
-            name: "id",
-            type: "INTEGER",
+            column_name: "last_seen",
+            data_type: "timestamp with time zone",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "size_us",
-            type: "INT4RANGE",
+            column_name: "password",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "size_uk",
-            type: "INT4RANGE",
+            column_name: "role",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "size",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      order_positions: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
+            column_name: "verified",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: "false",
           },
           {
-            name: "orderid",
-            type: "INTEGER",
+            column_name: "location_ids",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "articleid",
-            type: "INTEGER",
+            column_name: "isActive",
+            data_type: "boolean",
+            is_nullable: "YES",
+            column_default: "true",
           },
           {
-            name: "amount",
-            type: "SMALLINT",
+            column_name: "email",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "price",
-            type: "MONEY",
+            column_name: "firstname",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
+            column_name: "lastname",
+            data_type: "text",
+            is_nullable: "YES",
+            column_default: null,
           },
           {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "articleid",
-            foreign_table: "articles",
-            foreign_column: "id",
+            column_name: "isResetRequested",
+            data_type: "boolean",
+            is_nullable: "NO",
+            column_default: "false",
           },
           {
-            column: "orderid",
-            foreign_table: "order",
-            foreign_column: "id",
-          },
-        ],
-      },
-      products: {
-        columns: [
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "labelid",
-            type: "INTEGER",
-          },
-          {
-            name: "category",
-            type: "USER-DEFINED",
-          },
-          {
-            name: "gender",
-            type: "USER-DEFINED",
-          },
-          {
-            name: "currentlyactive",
-            type: "BOOLEAN",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "name",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      stock: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "articleid",
-            type: "INTEGER",
-          },
-          {
-            name: "count",
-            type: "INTEGER",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "articleid",
-            foreign_table: "articles",
-            foreign_column: "id",
+            column_name: "shift_ids",
+            data_type: "ARRAY",
+            is_nullable: "YES",
+            column_default: null,
           },
         ],
       },
-      articles: {
-        columns: [
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "productid",
-            type: "INTEGER",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "colorid",
-            type: "INTEGER",
-          },
-          {
-            name: "size",
-            type: "INTEGER",
-          },
-          {
-            name: "originalprice",
-            type: "MONEY",
-          },
-          {
-            name: "reducedprice",
-            type: "MONEY",
-          },
-          {
-            name: "taxrate",
-            type: "NUMERIC",
-          },
-          {
-            name: "discountinpercent",
-            type: "INTEGER",
-          },
-          {
-            name: "currentlyactive",
-            type: "BOOLEAN",
-          },
-          {
-            name: "ean",
-            type: "TEXT",
-          },
-          {
-            name: "description",
-            type: "TEXT",
-          },
-        ],
-        relationships: [
-          {
-            column: "colorid",
-            foreign_table: "colors",
-            foreign_column: "id",
-          },
-        ],
-      },
-      labels: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "icon",
-            type: "BYTEA",
-          },
-          {
-            name: "name",
-            type: "TEXT",
-          },
-          {
-            name: "slugname",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      customer: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "currentaddressid",
-            type: "INTEGER",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "gender",
-            type: "USER-DEFINED",
-          },
-          {
-            name: "dateofbirth",
-            type: "DATE",
-          },
-          {
-            name: "firstname",
-            type: "TEXT",
-          },
-          {
-            name: "lastname",
-            type: "TEXT",
-          },
-          {
-            name: "email",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      address: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "customerid",
-            type: "INTEGER",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "address1",
-            type: "TEXT",
-          },
-          {
-            name: "address2",
-            type: "TEXT",
-          },
-          {
-            name: "city",
-            type: "TEXT",
-          },
-          {
-            name: "zip",
-            type: "TEXT",
-          },
-          {
-            name: "firstname",
-            type: "TEXT",
-          },
-          {
-            name: "lastname",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      order: {
-        columns: [
-          {
-            name: "id",
-            type: "INTEGER",
-          },
-          {
-            name: "customer",
-            type: "INTEGER",
-          },
-          {
-            name: "ordertimestamp",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "shippingaddressid",
-            type: "INTEGER",
-          },
-          {
-            name: "total",
-            type: "MONEY",
-          },
-          {
-            name: "shippingcost",
-            type: "MONEY",
-          },
-          {
-            name: "created",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-          {
-            name: "updated",
-            type: "TIMESTAMP WITH TIME ZONE",
-          },
-        ],
-        relationships: [
-          {
-            column: "shippingaddressid",
-            foreign_table: "address",
-            foreign_column: "id",
-          },
-        ],
-      },
-    },
-  },
-  user03: {
-    user_id: "user03",
-    db_url: `/postgres`,
-    schema: {
-      appointments: {
-        columns: [
-          {
-            name: "appointment_date",
-            type: "DATE",
-          },
-          {
-            name: "appointment_time",
-            type: "TIME WITHOUT TIME ZONE",
-          },
-          {
-            name: "doctor_id",
-            type: "TEXT",
-          },
-          {
-            name: "appointment_id",
-            type: "TEXT",
-          },
-          {
-            name: "status",
-            type: "TEXT",
-          },
-          {
-            name: "reason_for_visit",
-            type: "TEXT",
-          },
-          {
-            name: "patient_id",
-            type: "TEXT",
-          },
-        ],
-        relationships: [
-          {
-            column: "patient_id",
-            foreign_table: "patients",
-            foreign_column: "patient_id",
-          },
-          {
-            column: "doctor_id",
-            foreign_table: "doctors",
-            foreign_column: "doctor_id",
-          },
-        ],
-      },
-      patients: {
-        columns: [
-          {
-            name: "registration_date",
-            type: "DATE",
-          },
-          {
-            name: "date_of_birth",
-            type: "DATE",
-          },
-          {
-            name: "last_name",
-            type: "TEXT",
-          },
-          {
-            name: "gender",
-            type: "CHARACTER",
-          },
-          {
-            name: "contact_number",
-            type: "TEXT",
-          },
-          {
-            name: "address",
-            type: "TEXT",
-          },
-          {
-            name: "insurance_provider",
-            type: "TEXT",
-          },
-          {
-            name: "insurance_number",
-            type: "TEXT",
-          },
-          {
-            name: "patient_id",
-            type: "TEXT",
-          },
-          {
-            name: "email",
-            type: "TEXT",
-          },
-          {
-            name: "first_name",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      doctors: {
-        columns: [
-          {
-            name: "years_experience",
-            type: "INTEGER",
-          },
-          {
-            name: "first_name",
-            type: "TEXT",
-          },
-          {
-            name: "last_name",
-            type: "TEXT",
-          },
-          {
-            name: "specialization",
-            type: "TEXT",
-          },
-          {
-            name: "phone_number",
-            type: "TEXT",
-          },
-          {
-            name: "hospital_branch",
-            type: "TEXT",
-          },
-          {
-            name: "doctor_id",
-            type: "TEXT",
-          },
-          {
-            name: "email",
-            type: "TEXT",
-          },
-        ],
-        relationships: [],
-      },
-      treatments: {
-        columns: [
-          {
-            name: "cost",
-            type: "NUMERIC",
-          },
-          {
-            name: "treatment_date",
-            type: "DATE",
-          },
-          {
-            name: "treatment_id",
-            type: "TEXT",
-          },
-          {
-            name: "appointment_id",
-            type: "TEXT",
-          },
-          {
-            name: "treatment_type",
-            type: "TEXT",
-          },
-          {
-            name: "description",
-            type: "TEXT",
-          },
-        ],
-        relationships: [
-          {
-            column: "appointment_id",
-            foreign_table: "appointments",
-            foreign_column: "appointment_id",
-          },
-        ],
-      },
-      billing: {
-        columns: [
-          {
-            name: "bill_date",
-            type: "DATE",
-          },
-          {
-            name: "amount",
-            type: "NUMERIC",
-          },
-          {
-            name: "treatment_id",
-            type: "TEXT",
-          },
-          {
-            name: "bill_id",
-            type: "TEXT",
-          },
-          {
-            name: "payment_status",
-            type: "TEXT",
-          },
-          {
-            name: "payment_method",
-            type: "TEXT",
-          },
-          {
-            name: "patient_id",
-            type: "TEXT",
-          },
-        ],
-        relationships: [
-          {
-            column: "patient_id",
-            foreign_table: "patients",
-            foreign_column: "patient_id",
-          },
-          {
-            column: "treatment_id",
-            foreign_table: "treatments",
-            foreign_column: "treatment_id",
-          },
-        ],
-      },
-    },
+    ],
   },
 };
