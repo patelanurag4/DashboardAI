@@ -82,7 +82,7 @@ export default function HomePage() {
                     className="resize-none text-base pr-12 min-h-[120px]"
                     disabled={isLoading}
                     id="query"
-                    placeholder="e.g., Show me the top 10 customers by revenue this month"
+                    placeholder="e.g., Ask me anything"
                     rows={4}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
